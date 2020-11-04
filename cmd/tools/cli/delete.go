@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/kf5i/k3ai-core/internal/k8s/kctl"
 	"github.com/kf5i/k3ai-core/internal/plugins"
@@ -58,6 +59,11 @@ func deletePlugin(config kctl.Config, pluginName string) error {
 		err = kctl.Delete(config, pluginItem)
 		if err != nil {
 			return err
+		}
+		time.Sleep(10 * time.Second)
+		fmt.Printf("plugin NAMESPACE: %s", pluginItem.Namespace)
+		if kctl.IsNameSpaceEmpty(config, pluginItem.Namespace) {
+			fmt.Printf("LMAO")
 		}
 	}
 	return nil
